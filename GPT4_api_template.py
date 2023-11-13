@@ -1,25 +1,31 @@
 import os
+import time
 import openai
 from azure.identity import AzureCliCredential
-
-# if "openai.azure.com" not in os.environ["no_proxy"]:
-#     os.environ["no_proxy"]=os.environ["no_proxy"]+",openai.azure.com"
-
-# os.environ["http_proxy"]="proxy.jpmchase.net:10443"
-# os.environ["https_proxy"]="proxy.jpmchase.net:10443"
-
-# venv_name = "openai"  # change as needed
-# os.environ["PATH"] = os.environ["PATH"] + f":/opt/omniai/work/instance1/jupyter/venvs/{venv_name}/bin"
-
-from transformers import GPT2Tokenizer
 import tiktoken
+
+if "openai.azure.com" not in os.environ["no_proxy"]:
+    os.environ["no_proxy"]=os.environ["no_proxy"]+",openai.azure.com"
+
+os.environ["http_proxy"]="proxy.jpmchase.net:10443"
+os.environ["https_proxy"]="proxy.jpmchase.net:10443"
+
+venv_name = "openai"  # change as needed
+os.environ["PATH"] = os.environ["PATH"] + f":/opt/omniai/work/instance1/jupyter/venvs/{venv_name}/bin"
+
+credential = AzureCliCredential()
+openai_token = credential.get_token("https://cognitiveservices.azure.com/.default")
+openai.api_key = openai_token.token
+openai.api_base = "https://llmopenai.jpmchase.net/WS0001037P-exp" #required
+openai.api_type = "azure_ad" # required
+openai.api_version = "2023-05-15" # change as needed
 
 # Load the GPT-3.5 tokenizer
 # Initialize the tiktoken tokenizer
 # tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 # tokenizer = tiktoken.encoding_for_model("gpt-3.5-turbo")
 gpt_version = "gpt-4-0613"
-tokenizer = tiktoken.encoding_for_model("cl100k_base")
+tokenizer = tiktoken.get_encoding("cl100k_base")
 
 
 def truncate_prompt(input_prompt, max_tokens=4000):
