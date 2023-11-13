@@ -51,7 +51,6 @@ def eval_res(answers, predictions):
             temp_f_scores.append(eval_util.f1_score(ans, pred)) # f1 score
             L_scores.append(max(temp_l_scores))
             F_scores.append(max(temp_f_scores))
-            res.append({"docId":docId, "answer":str(cand_ans), "predict": pred})
         avg_l_score = sum(L_scores) / len(L_scores)
         avg_f_score = sum(F_scores) / len(F_scores)
     print('ANLS:', avg_l_score)
