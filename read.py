@@ -19,14 +19,13 @@ import pickle
 def get_prompts(ds_name):
     file = open('vqa_devtest_prompts.pkl','rb')
     data = pickle.load(file)
-
     ds = data[ds_name]
-
-    prompts = ds['prompt']
-    docs = [' '.join(tokens) for tokens in ds['tokens']]
-    answers = ds['answers']
-
-    return prompts, answers, docs
+    return ds
+    
+    # prompts = ds['prompt']
+    # docs = [' '.join(tokens) for tokens in ds['tokens']]
+    # answers = ds['answers']
+    # return prompts, answers, docs
 
 if __name__=='__main__':
     ps, ans, ds = get_prompts('wtq')
