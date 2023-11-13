@@ -4,7 +4,6 @@ import eval
 # 'docvqa', 'visualmrc', 'wtq', 'websrc', 'buddie'
 mydata = read.get_ds('docvqa')
 
-
 cnt = 0
 res = []
 offset = 1000
