@@ -1,8 +1,7 @@
 import read
-import eval
 import time
 import json
-# import GPT4_api_template as gpt_api
+import GPT4_api_template as gpt_api
 
 if __name__=='__main__':
     # 'docvqa', 'visualmrc', 'wtq', 'websrc', 'buddie'
@@ -46,13 +45,13 @@ if __name__=='__main__':
             print(answers)
             print(item)
 
-        with open('temp4.txt', "a") as fw:
+        with open('temp_.txt', "a") as fw:
             fw.write(item + '\n')
         cnt+=1
         if cnt%50==0: 
             print('-sleep-')
             time.sleep(5)
-            with open('temp4.json', "w") as fw:
+            with open('temp_.json', "w") as fw:
                 json.dump(res, fw)
 
     # res = json.dumps(res)
