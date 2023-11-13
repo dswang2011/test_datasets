@@ -16,7 +16,7 @@ import pickle
 # # Index(['task', 'dataset', 'split', 'id', 'docId', 'prompt', 'answers', 'type', 'page', 'tokens', 'bboxes'],
 
 
-def get_prompts(ds_name):
+def get_ds(ds_name):
     file = open('vqa_devtest_prompts.pkl','rb')
     data = pickle.load(file)
     ds = data[ds_name]
