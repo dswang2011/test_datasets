@@ -28,7 +28,7 @@ def get_ds(ds_name):
     # return prompts, answers, docs
 
 if __name__=='__main__':
-    ps, ans, ds = get_prompts('wtq')
+    ps, ans, ds = get_ds('wtq')
     cnt = 0
     for p,a,d in zip(ps,ans,ds):
         print(p, a)

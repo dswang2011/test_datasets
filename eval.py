@@ -46,8 +46,8 @@ def eval_res(answers, predictions):
         print(pred, ' -v.s.- ',str(cand_ans))
         temp_l_scores, temp_f_scores = [],[]
         for ans in cand_ans:
-            temp_l_scores.append(eval_util.get_lev_score(ans,pred)) # Levenshein sim
-            temp_f_scores.append(eval_util.f1_score(ans, pred)) # f1 score
+            temp_l_scores.append(get_lev_score(ans,pred)) # Levenshein sim
+            temp_f_scores.append(f1_score(ans, pred)) # f1 score
             L_scores.append(max(temp_l_scores))
             F_scores.append(max(temp_f_scores))
         avg_l_score = sum(L_scores) / len(L_scores)
@@ -58,11 +58,17 @@ def eval_res(answers, predictions):
 
 
 if __name__=='__main__':
-    ans = "hello world, yes"
-    pred = "hello wang,  yes"
+    output_json = 'temp4.json' # param1
+    with open(output_json) as fw:
+        results = json.load(fw)
+    # ensemble
+    answers, predictions = [], []
+    for item in results:
+        answers.append(item['gold'])
+        predictions.append(item['answer'])
+    lev_score, f_score = eval_res(answers,predictions)
+    print('lev_score:', lev_score)
+    print('f_score:', f_score)
 
-    l_score = get_lev_score(ans,pred) # Levenshein sim
-    f_score = f1_score(ans, pred) # f1 score
 
-    print(l_score, f_score)
       

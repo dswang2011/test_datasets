@@ -17,9 +17,12 @@ import tiktoken
 # Load the GPT-3.5 tokenizer
 # Initialize the tiktoken tokenizer
 # tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-tokenizer = tiktoken.encoding_for_model("gpt-3.5-turbo")
+# tokenizer = tiktoken.encoding_for_model("gpt-3.5-turbo")
+gpt_version = "gpt-4-0613"
+tokenizer = tiktoken.encoding_for_model("cl100k_base")
 
-def truncate_prompt(input_prompt, max_tokens=3500): 
+
+def truncate_prompt(input_prompt, max_tokens=4000):
     # Tokenize the input prompt using GPT-2 tokenizer
     input_prompt_tokens = tokenizer.encode(
         input_prompt, 
@@ -75,7 +78,7 @@ def get_completion(doc, question):
         try:
             response = openai.ChatCompletion.create(
                 # engine = "gpt-3.5-turbo",
-                engine = "gpt-35-turbo-0613",
+                engine = gpt_version,   # global param
                 messages = messages,
                 temperature = 0,
                 # max_tokens = 50
