@@ -38,24 +38,25 @@ def get_lev_score(ans, pred):
 
 
 def eval_res(answers, predictions):
-      '''
-      answers: list of answers of list
-      predictions: list of predictions 
-      '''
-      L_scores, F_scores = [],[]
-      for cand_ans,pred in zip(answers, predictions):
-          print(pred, ' -v.s.- ',str(cand_ans))
-          temp_l_scores, temp_f_scores = [],[]
-          for ans in cand_ans:
-              temp_l_scores.append(eval_util.get_lev_score(ans,pred)) # Levenshein sim
-              temp_f_scores.append(eval_util.f1_score(ans, pred)) # f1 score
-          L_scores.append(max(temp_l_scores))
-          F_scores.append(max(temp_f_scores))
-          res.append({"docId":docId, "answer":str(cand_ans), "predict": pred})
-      avg_l_score = sum(L_scores) / len(L_scores)
-      avg_f_score = sum(F_scores) / len(F_scores)
-      print('ANLS:', avg_l_score)
-      print('Avg_F1:', avg_f_score)
+    '''
+    answers: list of answers of list
+    predictions: list of predictions 
+    '''
+    L_scores, F_scores = [],[]
+    for cand_ans,pred in zip(answers, predictions):
+        print(pred, ' -v.s.- ',str(cand_ans))
+        temp_l_scores, temp_f_scores = [],[]
+        for ans in cand_ans:
+            temp_l_scores.append(eval_util.get_lev_score(ans,pred)) # Levenshein sim
+            temp_f_scores.append(eval_util.f1_score(ans, pred)) # f1 score
+            L_scores.append(max(temp_l_scores))
+            F_scores.append(max(temp_f_scores))
+            res.append({"docId":docId, "answer":str(cand_ans), "predict": pred})
+        avg_l_score = sum(L_scores) / len(L_scores)
+        avg_f_score = sum(F_scores) / len(F_scores)
+    print('ANLS:', avg_l_score)
+    print('Avg_F1:', avg_f_score)
+    return avg_l_score, avg_f_score
 
 
 if __name__=='__main__':
