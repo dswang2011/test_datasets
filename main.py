@@ -2,7 +2,7 @@ import read
 import eval
 
 # 'docvqa', 'visualmrc', 'wtq', 'websrc', 'buddie'
-mydata = read.get_prompts('docvqa')
+mydata = read.get_ds('docvqa')
 
 
 cnt = 0
