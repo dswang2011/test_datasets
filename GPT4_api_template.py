@@ -19,7 +19,7 @@ import tiktoken
 # tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 tokenizer = tiktoken.encoding_for_model("gpt-3.5-turbo")
 
-def truncate_prompt(input_prompt, max_tokens=4096): 
+def truncate_prompt(input_prompt, max_tokens=3500): 
     # Tokenize the input prompt using GPT-2 tokenizer
     input_prompt_tokens = tokenizer.encode(
         input_prompt, 
