@@ -5,6 +5,11 @@ import pickle
 
 # print(data.keys())
 # # dict_keys(['docvqa', 'visualmrc', 'wtq', 'websrc', 'buddie'])
+# baselines:
+# 1) websrc (Mathieu); 2) DocVQA + VisualMRC (Simerjot); 3) WTQ + Buddie (Yulong) => GPT4
+# 4) all 5 datasets (Donghsheng) => Llama-7B-instruct (and Mistral-7B)
+# 
+
 # print(data['wtq'])
 
 # print(data['wtq'].keys())
