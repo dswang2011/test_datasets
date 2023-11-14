@@ -6,7 +6,7 @@ import GPT4_api_template as gpt_api
 if __name__=='__main__':
     # 'docvqa', 'visualmrc', 'wtq', 'websrc', 'buddie'
     dataset_name = 'docvqa' # param1: dataset name
-    final_json_output = 'final_.json'   # param2: output path
+    final_json_output = f'final_{dataset_name}.json'   # param2: output path
 
     mydata = read.get_ds(dataset_name)  # split = test only 
     print(mydata.keys())
@@ -36,26 +36,17 @@ if __name__=='__main__':
         
         # deliver to GPT
         res.append({"id":i+offset, "questionId":qID, "answer":pred_answer, "gold":answers})
-        item = str({"questionId":qID, "answer":pred_answer})
 
         if cnt == 0:
             print(doc)
             print(question)
             print(pred_answer)
             print(answers)
-            print(item)
 
-        with open('temp_.txt', "a") as fw:
-            fw.write(item + '\n')
         cnt+=1
         if cnt%50==0: 
-            print('-sleep-')
-            time.sleep(5)
-            with open('temp_.json', "w") as fw:
+            with open(final_json_output, "w") as fw:
                 json.dump(res, fw)
 
-    # res = json.dumps(res)
-    # with open('gpt_res.json','a') as fw:
-    #     fw.write(str(res))
     with open(final_json_output, "w") as fw:
         json.dump(res, fw)
