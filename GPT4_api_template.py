@@ -66,15 +66,12 @@ def truncate_prompt(input_prompt, max_tokens=4000):
 
 
 def get_completion(doc, question):
-    prompt = f"""
-        Based on the given Document, {question} Please only provide the exact answer string (no paraphrasing).
-
-        Use the following format:
-        Answer:<answer string>
-
-        Document:
-        ```{doc}```
-    """
+    prompt = f"""Based on the given Document, {question} 
+Please provide only the answer (no decorations or explanations). Extract from the document when possible.
+Use the following format to answer:
+Answer:<answer>
+Document:```{doc}```
+"""
     # print(prompt)
 
     messages = [{"role": "user", "content":truncate_prompt(prompt)}]
