@@ -58,7 +58,8 @@ def eval_res(answers, predictions):
 
 
 if __name__=='__main__':
-    output_json = 'temp4.json' # param1
+    dataset_name = "docvqa"
+    output_json = 'final_{dataset_name}.json' # param1
     with open(output_json) as fw:
         results = json.load(fw)
     # ensemble
