@@ -28,37 +28,26 @@ gpt_version = "gpt-4-0613"
 tokenizer = tiktoken.get_encoding("cl100k_base")
 
 
-def truncate_prompt(input_prompt, max_tokens=4000):
-    # Tokenize the input prompt using GPT-2 tokenizer
+def truncate_prompt(input_prompt, max_tokens=8192, error_margin=100):
     input_prompt_tokens = tokenizer.encode(
-        input_prompt, 
-        # add_special_tokens=False, 
-        # return_tensors="pt"
+        input_prompt
     )
-
     # Calculate the number of tokens in the input prompt
     num_tokens = len(
         input_prompt_tokens
-        # input_prompt_tokens[0]
     )
-
     # Check if the input prompt exceeds the maximum token limit
     if num_tokens > max_tokens:
         # If it exceeds, you need to truncate it
-        # Calculate how many tokens to keep from the beginning
-        num_tokens_to_keep = max_tokens - 500  # Reserve 50 token for the model's response
+        num_tokens_to_keep = max_tokens - error_margin  # Reserve k tokens for the model's response
+        # NOTE: we pick 500 to give a lot of room for error in the length computation
         truncated_input_tokens = (
             input_prompt_tokens[:num_tokens_to_keep]
-            # input_prompt_tokens[:, :num_tokens_to_keep]
         )
-
         # Decode the truncated input
         truncated_input_text = tokenizer.decode(
             truncated_input_tokens
-            # truncated_input_tokens[0], 
-            # skip_special_tokens=True
         )
-
         return truncated_input_text
     else:
         # If it doesn't exceed the limit, you can use the original input prompt as-is
@@ -72,30 +61,26 @@ Use the following format to answer:
 Answer:<answer>
 Document:```{doc}```
 """
-    # print(prompt)
-
-    messages = [{"role": "user", "content":truncate_prompt(prompt)}]
-
-    retry = True
-    while retry:
+    margin = 100
+    while True:
         try:
+            messages = [{"role": "user", "content": truncate_prompt(prompt, error_margin=margin)}]
             response = openai.ChatCompletion.create(
-                # engine = "gpt-3.5-turbo",
-                engine = gpt_version,   # global param
-                messages = messages,
-                temperature = 0,
-                # max_tokens = 50
+                engine=GPT_VERSION, 
+                messages=messages,
+                temperature=0
             )
             return response.choices[0].message["content"].strip()
         except Exception as e:
             error_message = str(e).lower()
             if 'rate limit' in error_message and 'second' in error_message:
-                print(' sleep and retry')
-                retry = True
+                print('=> sleep and retry')
                 time.sleep(10)
             elif "maximum context length" in error_message:
-                return 
+                print('=> not enough tokens for prompt + answer')
+                margin += 100
+                continue
             else:
-                raise(e)
+                return
 
 
