@@ -3,6 +3,9 @@ import string
 import re
 import Levenshtein as lev
 from collections import Counter
+from typing import Sequence
+from pycocoevalcap.tokenizer.ptbtokenizer import PTBTokenizer
+from pycocoevalcap.cider.cider import Cider
 
 
 def normalize_answer(s):
@@ -30,6 +33,26 @@ def f1_score(ground_truth, prediction):
     recall = 1.0 * num_same / len(ground_truth_tokens)
     f1 = (2 * precision * recall) / (precision + recall)
     return f1
+
+
+def cider(
+    targets: Sequence[Sequence[str]],
+    predictions: Sequence[str]) -> float:
+    """Compute CIDEr score."""
+    coco_tokenizer = PTBTokenizer()
+    scorer = Cider()
+    score, scores = scorer.compute_score(
+      gts=coco_tokenizer.tokenize({
+          str(i): [{"caption": t} for t in target]
+          for i, target in enumerate(targets)
+      }),
+      res=coco_tokenizer.tokenize({
+          str(i): [{"caption": prediction}]
+          for i, prediction in enumerate(predictions)
+      }))
+    score = float(score) * 100.0
+    scores = [float(s) * 100.0 for s in scores.tolist()]
+    return score, scores
 
 
 def get_lev_score(ans, pred):
